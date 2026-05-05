@@ -1,0 +1,11 @@
+#!/bin/bash
+
+### This script is called after the user change environment variables in application setting page.
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if "${SCRIPT_DIR}/main" status >/dev/null 2>&1; then
+  "${SCRIPT_DIR}/main" stop
+  "${SCRIPT_DIR}/main" start
+fi
+
+exit 0

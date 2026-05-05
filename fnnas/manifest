@@ -1,0 +1,16 @@
+appname=fnnas.mijiageek
+version=1.0.4
+display_name=米家极客版验证码
+desc="""米家极客版验证码工具"""
+platform=x86
+source=thirdparty
+maintainer=liaaaaa
+maintainer_url=https://github.com/609293964/MIJIA_GEEK-for-fnos
+distributor=liaaaaa
+distributor_url=https://github.com/609293964/MIJIA_GEEK-for-fnos
+ctl_stop=true
+desktop_uidir=ui
+desktop_applaunchname=fnnas.mijiageek.Application
+checkport=true
+disable_authorization_path=false
+checksum=f638b07bd506ea913557e2a89b7c45b2

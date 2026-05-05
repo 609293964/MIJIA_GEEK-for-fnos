@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>MIJIA GEEK CODE - Web版</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    #mijia-passcode-panel {
+      width: 100%;
+      max-width: 420px;
+      color: #ffffff;
+      position: relative;
+    }
+
+    #mijia-passcode-panel * {
+      box-sizing: border-box;
+    }
+
+    #mijia-passcode-panel button,
+    #mijia-passcode-panel input,
+    #mijia-passcode-panel textarea {
+      font: inherit;
+    }
+
+    #mijia-passcode-panel .mini-toggle {
+      display: none;
+    }
+
+    #mijia-passcode-panel .card {
+      display: block;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #171717;
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.32);
+    }
+
+    #mijia-passcode-panel .card-inner {
+      padding: 28px 20px 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    #mijia-passcode-panel .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #mijia-passcode-panel .header-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    #mijia-passcode-panel .title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+      user-select: none;
+    }
+
+    #mijia-passcode-panel .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #c9e3ff;
+      background: rgba(47, 124, 255, 0.16);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    #mijia-passcode-panel .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #mijia-passcode-panel .header-button,
+    #mijia-passcode-panel .icon-button,
+    #mijia-passcode-panel .action-button,
+    #mijia-passcode-panel .small-button,
+    #mijia-passcode-panel .secondary-button,
+    #mijia-passcode-panel .primary-button {
+      border: 0;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    #mijia-passcode-panel .header-button:hover,
+    #mijia-passcode-panel .icon-button:hover,
+    #mijia-passcode-panel .action-button:hover,
+    #mijia-passcode-panel .small-button:hover,
+    #mijia-passcode-panel .secondary-button:hover,
+    #mijia-passcode-panel .primary-button:hover {
+      transform: translateY(-1px);
+    }
+
+    #mijia-passcode-panel .header-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.76);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 14px;
+    }
+
+    #mijia-passcode-panel .icon-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      display: none;
+    }
+
+    #mijia-passcode-panel .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    #mijia-passcode-panel .settings-section {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #mijia-passcode-panel .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.92);
+      letter-spacing: 0.02em;
+    }
+
+    #mijia-passcode-panel .field-note {
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    #mijia-passcode-panel .field-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #mijia-passcode-panel .field-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    #mijia-passcode-panel .text-input,
+    #mijia-passcode-panel .textarea-input,
+    #mijia-passcode-panel .link-box,
+    #mijia-passcode-panel .passcode-box {
+      width: 100%;
+      border: 0;
+      border-radius: 20px;
+      background: #444444;
+      color: #ffffff;
+    }
+
+    #mijia-passcode-panel .text-input,
+    #mijia-passcode-panel .textarea-input {
+      padding: 12px 14px;
+      line-height: 1.6;
+    }
+
+    #mijia-passcode-panel .textarea-input {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    #mijia-passcode-panel .textarea-shell .textarea-input {
+      display: block;
+      width: 100%;
+      min-height: 140px;
+      padding: 12px 14px;
+      border-radius: 20px;
+      background: #444444;
+      color: #ffffff;
+      caret-color: #ffffff;
+      -webkit-text-fill-color: #ffffff;
+      tab-size: 2;
+      resize: vertical;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.26) transparent;
+    }
+
+    #mijia-passcode-panel .link-box {
+      min-height: 60px;
+      padding: 10px 10px 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #mijia-passcode-panel .url-link {
+      flex: 1;
+      min-width: 0;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2f7cff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-align: center;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #mijia-passcode-panel .url-link:not([href]) {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      cursor: default;
+    }
+
+    #mijia-passcode-panel .url-refresh-button {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      flex: 0 0 34px;
+      align-self: center;
+      margin: 0;
+    }
+
+    #mijia-passcode-panel .passcode-box {
+      min-height: 76px;
+      padding: 0 12px 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #mijia-passcode-panel .passcode-value {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      font-size: 24px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #mijia-passcode-panel .passcode-slot {
+      width: 1ch;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 1ch;
+    }
+
+    #mijia-passcode-panel .passcode-value.is-muted {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    #mijia-passcode-panel .passcode-actions {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    #mijia-passcode-panel .action-button,
+    #mijia-passcode-panel .secondary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    #mijia-passcode-panel .inline-icon-button {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    #mijia-passcode-panel .inline-icon-button:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    #mijia-passcode-panel .inline-icon-button::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      padding: 6px 10px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(14, 14, 14, 0.96);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.26);
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    #mijia-passcode-panel .inline-icon-button:hover::after,
+    #mijia-passcode-panel .inline-icon-button:focus-visible::after {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    #mijia-passcode-panel .action-button {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    #mijia-passcode-panel .secondary-button {
+      padding: 11px 14px;
+      font-size: 14px;
+    }
+
+    #mijia-passcode-panel .primary-button {
+      width: auto;
+      min-width: 220px;
+      max-width: 100%;
+      align-self: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      color: #ffffff;
+      font-size: 15px;
+      background: linear-gradient(180deg, #2e95ff 0%, #1b7ff0 100%);
+    }
+
+    #mijia-passcode-panel .secondary-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #mijia-passcode-panel .status {
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.68);
+      display: none;
+    }
+
+    #mijia-passcode-panel .status-toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      z-index: 2147483647;
+      max-width: min(560px, calc(100vw - 32px));
+      padding: 12px 18px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: rgba(14, 14, 14, 0.92);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+      transform: translate(-50%, -14px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    #mijia-passcode-panel .status-toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    #mijia-passcode-panel details {
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    #mijia-passcode-panel summary {
+      padding: 12px 14px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    #mijia-passcode-panel pre {
+      margin: 0;
+      padding: 0 14px 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #mijia-passcode-panel .icon-inline,
+    #mijia-passcode-panel .title-badge svg,
+    #mijia-passcode-panel .field-label svg,
+    #mijia-passcode-panel .modal-title svg,
+    #mijia-passcode-panel .header-button svg,
+    #mijia-passcode-panel .inline-icon-button svg,
+    #mijia-passcode-panel .action-button svg,
+    #mijia-passcode-panel .secondary-button svg,
+    #mijia-passcode-panel .modal-close svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #mijia-passcode-panel .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+    }
+
+    #mijia-passcode-panel .modal-overlay.is-open {
+      display: flex;
+    }
+
+    #mijia-passcode-panel .modal-dialog {
+      width: min(560px, calc(100vw - 24px));
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      border-radius: 24px;
+      background: #171717;
+      box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42);
+    }
+
+    #mijia-passcode-panel .modal-inner {
+      display: grid;
+      gap: 16px;
+      padding: 22px 20px 20px;
+    }
+
+    #mijia-passcode-panel .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #mijia-passcode-panel .modal-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    #mijia-passcode-panel .modal-close {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+    }
+
+    #mijia-passcode-panel .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+
+<div id="mijia-passcode-panel">
+  <!-- UI 会通过 JS 注入 -->
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const panelId = 'mijia-passcode-panel';
+  const responsePlaceholder = '原始响应会显示在这里。';
+  const passcodePlaceholder = '------';
+  const remoteUrlPlaceholder = 'IP:default';
+  const storageKeys = {
+    requestConfig: 'curl_command'
+  };
+  const fixedHeaders = {
+    miotRequestModel: 'xiaomi.gateway.hub1'
+  };
+  const defaultSettings = {
+    requestUrl: '',
+    cookie: '',
+    ipRequestBody: '',
+    passcodeRequestBody: '',
+    accept: '*/*',
+    contentType: 'application/x-www-form-urlencoded',
+    userAgent: '',
+    connection: 'keep-alive',
+    acceptEncoding: 'gzip, deflate, br',
+    acceptLanguage: 'zh-Hans;q=1',
+    operateCommon: '',
+    originFrom: '',
+    xiaomiProtocolFlagCli: ''
+  };
+  const passcodeKeys = ['passcode', 'passwd', 'password', 'pwd'];
+  const icons = {
+    settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.75a1.5 1.5 0 0 1 1.5 1.5v.46a6.83 6.83 0 0 1 1.78.74l.33-.33a1.5 1.5 0 1 1 2.12 2.12l-.33.33c.32.56.57 1.15.74 1.78h.46a1.5 1.5 0 0 1 0 3h-.46a6.83 6.83 0 0 1-.74 1.78l.33.33a1.5 1.5 0 0 1-2.12 2.12l-.33-.33a6.83 6.83 0 0 1-1.78.74v.46a1.5 1.5 0 0 1-3 0v-.46a6.83 6.83 0 0 1-1.78-.74l-.33.33a1.5 1.5 0 0 1-2.12-2.12l.33-.33a6.83 6.83 0 0 1-.74-1.78h-.46a1.5 1.5 0 0 1 0-3h.46c.17-.63.42-1.22.74-1.78l-.33-.33a1.5 1.5 0 0 1 2.12-2.12l.33.33c.56-.32 1.15-.57 1.78-.74v-.46A1.5 1.5 0 0 1 12 3.75Z"></path><circle cx="12" cy="12" r="2.75"></circle></svg>',
+    badge: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10.25V8.5a5 5 0 0 1 10 0v1.75"></path><rect x="4.75" y="10.25" width="14.5" height="10" rx="2.25"></rect><path d="M12 13.5v3"></path></svg>',
+    passcode: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.25" cy="14.25" r="3.25"></circle><path d="M11.25 14.25h8m-2 0v2m-3-2v2"></path><path d="M10.25 12.25l5.5-5.5a2.25 2.25 0 1 1 3.18 3.18l-5.5 5.5"></path></svg>',
+    copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="7" width="10" height="12" rx="2"></rect><path d="M7 15H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"></path></svg>',
+    fill: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.75" y="4.75" width="14.5" height="14.5" rx="2.25"></rect><path d="M8.5 9.5h7"></path><path d="M8.5 12h7"></path><path d="M8.5 14.5h4.5"></path><path d="m16.5 18.5 3-3"></path><path d="m17 12.5 2.5 2.5-3 3L14 15.5"></path></svg>',
+    refresh: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg>',
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg>',
+    mijia: '<img src="data:image/png;base64,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" alt="米家 logo">'
+  };
+  let lastPasscode = '';
+  let lastRemoteUrl = '';
+  let statusToastTimer = 0;
+  const outputState = {
+    url: responsePlaceholder,
+    passcode: responsePlaceholder
+  };
+
+  const panel = document.getElementById(panelId);
+  panel.innerHTML = `
+    <div class="card">
+      <div class="card-inner">
+        <div class="header">
+          <div class="header-main">
+            <div class="title" data-role="panel-title">MIJIA GEEK</div>
+            <div class="title-badge">${icons.badge}<span>登录码</span></div>
+          </div>
+          <div class="header-actions">
+            <button class="header-button" type="button" data-action="open-settings">${icons.settings}<span>设置</span></button>
+          </div>
+        </div>
+        <div class="status" style="display: block; color: #4caf50; font-size: 13px; margin-bottom: -4px;">
+          提示：已启用本地后端代理服务，跨域限制已解除，发包不再受限。
+        </div>
+        <label class="field">
+          <span class="field-label">URL</span>
+          <div class="link-box">
+            <a class="url-link" data-role="remote-url" target="_blank" rel="noopener noreferrer">IP:default</a>
+            <button class="inline-icon-button url-refresh-button" type="button" data-action="fetch-url" data-tooltip="刷新 URL" aria-label="刷新 URL">${icons.refresh}</button>
+          </div>
+        </label>
+        <div class="field">
+          <span class="field-label">
+            ${icons.passcode}
+            <span>登录码</span>
+          </span>
+          <div class="passcode-box">
+            <div class="passcode-value is-muted" data-role="passcode">${renderPasscodeSlots(passcodePlaceholder)}</div>
+            <div class="passcode-actions">
+              <button class="inline-icon-button" type="button" data-action="copy" data-tooltip="复制登录码" aria-label="复制登录码">${icons.copy}</button>
+              <button class="inline-icon-button" type="button" data-action="fill-page" data-tooltip="未在米家环境" aria-label="填入输入框" disabled style="opacity: 0.5;">${icons.fill}</button>
+            </div>
+          </div>
+        </div>
+        <div class="status" data-role="status">请先打开设置填写 URL 和独立 POST 参数</div>
+        <button class="primary-button" type="button" data-action="fetch-passcode">重新获取登录码</button>
+        <details>
+          <summary>查看原始响应</summary>
+          <pre data-role="output">${responsePlaceholder}</pre>
+        </details>
+      </div>
+    </div>
+    <div class="modal-overlay" data-role="settings-modal">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="设置">
+        <div class="modal-inner">
+          <div class="modal-header">
+            <div class="modal-title">${icons.settings}<span>设置</span></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button class="action-button" style="background:rgba(47, 124, 255, 0.2); color:#2f7cff; padding:8px 12px; font-weight:bold;" type="button" data-action="upload-har">📁 导入抓包</button>
+              <button class="modal-close" type="button" data-action="close-settings" title="关闭">${icons.close}</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="section-title">1. 要抓取数据的 URL</div>
+            <label class="field">
+              <span class="field-label">URL</span>
+              <input class="text-input" data-setting="requestUrl" placeholder="例如：https://core.api.mijia.tech/app/home/rpc/1234567890" />
+            </label>
+            <div class="field-note">Host 和 domain-refer 会从上面的 URL 自动提取，MIOT-REQUEST-MODEL 固定写入 xiaomi.gateway.hub1。</div>
+          </div>
+          <div class="settings-section">
+            <div class="section-title">2. POST 参数 (支持直接粘贴 CURL 命令解析)</div>
+            <label class="field">
+              <span class="field-label">URL 接口 POST 数据</span>
+              <div class="textarea-shell">
+                <textarea class="textarea-input" data-setting="ipRequestBody" placeholder="粘贴完整的 CURL 请求可自动解析，或手动填入POST数据：_nonce=...&data=...&signature=..."></textarea>
+              </div>
+            </label>
+            <label class="field">
+              <span class="field-label">登录码 POST 数据</span>
+              <div class="textarea-shell">
+                <textarea class="textarea-input" data-setting="passcodeRequestBody" placeholder="粘贴完整的 CURL 请求可自动解析，或手动填入POST数据：_nonce=...&data=...&signature=..."></textarea>
+              </div>
+            </label>
+            <label class="field">
+              <span class="field-label">Cookie</span>
+              <div class="textarea-shell">
+                <textarea class="textarea-input" data-setting="cookie" placeholder="填写请求所需 Cookie"></textarea>
+              </div>
+            </label>
+          </div>
+          <div class="settings-section">
+            <div class="section-title">客户端伪装</div>
+            <div class="field-grid">
+              <label class="field">
+                <span class="field-label">Accept</span>
+                <input class="text-input" data-setting="accept" placeholder="*/*" />
+              </label>
+              <label class="field">
+                <span class="field-label">Content-Type</span>
+                <input class="text-input" data-setting="contentType" placeholder="application/x-www-form-urlencoded" />
+              </label>
+              <label class="field">
+                <span class="field-label">User-Agent</span>
+                <input class="text-input" data-setting="userAgent" placeholder="填写客户端 User-Agent" />
+              </label>
+              <label class="field">
+                <span class="field-label">Connection</span>
+                <input class="text-input" data-setting="connection" placeholder="keep-alive" />
+              </label>
+              <label class="field">
+                <span class="field-label">Accept-Encoding</span>
+                <input class="text-input" data-setting="acceptEncoding" placeholder="gzip, deflate, br" />
+              </label>
+              <label class="field">
+                <span class="field-label">Accept-Language</span>
+                <input class="text-input" data-setting="acceptLanguage" placeholder="zh-Hans;q=1" />
+              </label>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="section-title">设备单独设置</div>
+            <div class="field-grid">
+              <label class="field">
+                <span class="field-label">operate-common</span>
+                <input class="text-input" data-setting="operateCommon" placeholder="填写设备 operate-common" />
+              </label>
+              <label class="field">
+                <span class="field-label">Origin-From</span>
+                <input class="text-input" data-setting="originFrom" placeholder="例如：MiHome" />
+              </label>
+              <label class="field">
+                <span class="field-label">X-XIAOMI-PROTOCAL-FLAG-CLI</span>
+                <input class="text-input" data-setting="xiaomiProtocolFlagCli" placeholder="例如：PROTOCAL-HTTP2" />
+              </label>
+            </div>
+          </div>
+          <div class="secondary-actions">
+            <button class="action-button" type="button" data-action="clear-saved">删除已保存设置</button>
+            <button class="action-button" type="button" data-action="clear">清空结果</button>
+          </div>
+          <div class="modal-actions">
+            <button class="secondary-button" type="button" data-action="save">保存并关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-toast" data-role="status-toast" aria-live="polite"></div>
+  `;
+
+  const fields = {
+    requestUrl: panel.querySelector('[data-setting="requestUrl"]'),
+    cookie: panel.querySelector('[data-setting="cookie"]'),
+    ipRequestBody: panel.querySelector('[data-setting="ipRequestBody"]'),
+    passcodeRequestBody: panel.querySelector('[data-setting="passcodeRequestBody"]'),
+    accept: panel.querySelector('[data-setting="accept"]'),
+    contentType: panel.querySelector('[data-setting="contentType"]'),
+    userAgent: panel.querySelector('[data-setting="userAgent"]'),
+    connection: panel.querySelector('[data-setting="connection"]'),
+    acceptEncoding: panel.querySelector('[data-setting="acceptEncoding"]'),
+    acceptLanguage: panel.querySelector('[data-setting="acceptLanguage"]'),
+    operateCommon: panel.querySelector('[data-setting="operateCommon"]'),
+    originFrom: panel.querySelector('[data-setting="originFrom"]'),
+    xiaomiProtocolFlagCli: panel.querySelector('[data-setting="xiaomiProtocolFlagCli"]')
+  };
+  const passcodeNode = panel.querySelector('[data-role="passcode"]');
+  const statusNode = panel.querySelector('[data-role="status"]');
+  const outputNode = panel.querySelector('[data-role="output"]');
+  const remoteUrlNode = panel.querySelector('[data-role="remote-url"]');
+  const settingsModalNode = panel.querySelector('[data-role="settings-modal"]');
+  const statusToastNode = panel.querySelector('[data-role="status-toast"]');
+
+  // 将 curl 的自动识别绑定到输入框
+  [fields.ipRequestBody, fields.passcodeRequestBody].forEach(input => {
+    input.addEventListener('paste', (e) => {
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      if (pasted && pasted.trim().startsWith('curl')) {
+        setTimeout(() => {
+          try {
+            const parsed = migrateCurlCommandToSettings(pasted);
+            if (parsed && parsed.requestUrl) {
+              const currentKind = input === fields.ipRequestBody ? 'url' : 'passcode';
+              const toApply = { ...collectSettings(), ...parsed };
+              
+              if (currentKind === 'url') {
+                toApply.ipRequestBody = parsed.ipRequestBody;
+                toApply.passcodeRequestBody = fields.passcodeRequestBody.value; // 保留另一个
+              } else {
+                toApply.passcodeRequestBody = parsed.passcodeRequestBody;
+                toApply.ipRequestBody = fields.ipRequestBody.value; // 保留另一个
+              }
+
+              applySettings(toApply);
+              setStatus('已成功解析 CURL 请求');
+            }
+          } catch (e) {
+            console.error('CURL 解析失败', e);
+          }
+        }, 100);
+      }
+    });
+  });
+
+  function readStorageValue(name) {
+    try {
+      return localStorage.getItem(name) || '';
+    } catch(e) {
+      return '';
+    }
+  }
+
+  function writeStorageValue(name, value) {
+    try {
+      localStorage.setItem(name, value);
+    } catch(e) {}
+  }
+
+  function deleteStorageValue(name) {
+    try {
+      localStorage.removeItem(name);
+    } catch(e) {}
+  }
+
+  function normalizeSettings(settings) {
+    const normalizedSettings = { ...defaultSettings };
+    if (!settings || typeof settings !== 'object') {
+      return normalizedSettings;
+    }
+    for (const key of Object.keys(defaultSettings)) {
+      if (typeof settings[key] === 'string') {
+        normalizedSettings[key] = settings[key];
+      }
+    }
+    return normalizedSettings;
+  }
+
+  function encodeStoredSettings(settings) {
+    return JSON.stringify({
+      settings: normalizeSettings(settings)
+    });
+  }
+
+  function readHeaderValue(headers, targetName) {
+    const targetNameLower = targetName.toLowerCase();
+    for (const [headerName, headerValue] of Object.entries(headers)) {
+      if (headerName.toLowerCase() === targetNameLower) {
+        return headerValue;
+      }
+    }
+    return '';
+  }
+
+  function safeDecodeURIComponent(value) {
+    try {
+      return decodeURIComponent(value);
+    } catch (error) {
+      return value;
+    }
+  }
+
+  function detectLegacyRequestKind(data) {
+    const decodedData = safeDecodeURIComponent(data || '');
+    if (decodedData.includes('miIO.get_autowebconfig_url')) {
+      return 'url';
+    }
+    if (decodedData.includes('miIO.get_central_link_passcode')) {
+      return 'passcode';
+    }
+    return '';
+  }
+
+  function migrateCurlCommandToSettings(command) {
+    if (!command) {
+      return { ...defaultSettings };
+    }
+    try {
+      const request = parseCurlCommand(command);
+      const migratedSettings = {
+        ...defaultSettings,
+        requestUrl: request.url,
+        cookie: readHeaderValue(request.headers, 'Cookie'),
+        accept: readHeaderValue(request.headers, 'Accept') || defaultSettings.accept,
+        contentType: readHeaderValue(request.headers, 'Content-Type') || defaultSettings.contentType,
+        userAgent: readHeaderValue(request.headers, 'User-Agent'),
+        connection: readHeaderValue(request.headers, 'Connection') || defaultSettings.connection,
+        acceptEncoding: readHeaderValue(request.headers, 'Accept-Encoding') || defaultSettings.acceptEncoding,
+        acceptLanguage: readHeaderValue(request.headers, 'Accept-Language') || defaultSettings.acceptLanguage,
+        operateCommon: readHeaderValue(request.headers, 'operate-common'),
+        originFrom: readHeaderValue(request.headers, 'Origin-From'),
+        xiaomiProtocolFlagCli: readHeaderValue(request.headers, 'X-XIAOMI-PROTOCAL-FLAG-CLI')
+      };
+      const requestKind = detectLegacyRequestKind(request.data);
+
+      if (requestKind === 'url') {
+        migratedSettings.ipRequestBody = request.data || '';
+      } else if (requestKind === 'passcode') {
+        migratedSettings.passcodeRequestBody = request.data || '';
+      } else {
+        migratedSettings.passcodeRequestBody = request.data || '';
+      }
+
+      return migratedSettings;
+    } catch (error) {
+      console.warn("Parse CURL Error:", error);
+      return { ...defaultSettings };
+    }
+  }
+
+  function decodeStoredSettings(rawValue) {
+    if (!rawValue) {
+      return { ...defaultSettings };
+    }
+    try {
+      const parsedValue = JSON.parse(rawValue);
+      if (parsedValue && typeof parsedValue === 'object') {
+        if (parsedValue.settings && typeof parsedValue.settings === 'object') {
+          return normalizeSettings(parsedValue.settings);
+        }
+        if (typeof parsedValue.curlCommand === 'string') {
+          return migrateCurlCommandToSettings(parsedValue.curlCommand);
+        }
+      }
+    } catch (error) {
+      return migrateCurlCommandToSettings(rawValue);
+    }
+    return { ...defaultSettings };
+  }
+
+  function setStatus(message, showToast = true) {
+    statusNode.textContent = message;
+    if (!showToast) {
+      statusToastNode.classList.remove('is-visible');
+      return;
+    }
+    statusToastNode.textContent = message;
+    statusToastNode.classList.add('is-visible');
+    window.clearTimeout(statusToastTimer);
+    statusToastTimer = window.setTimeout(() => {
+      statusToastNode.classList.remove('is-visible');
+    }, 2400);
+  }
+
+  function setPasscodeResult(value, isCode) {
+    passcodeNode.className = `passcode-value${isCode ? '' : ' is-muted'}`;
+    if (value === passcodePlaceholder || (isCode && /^\d{6}$/.test(String(value)))) {
+      passcodeNode.innerHTML = renderPasscodeSlots(value);
+      return;
+    }
+    passcodeNode.textContent = value;
+  }
+
+  function setRemoteUrl(value) {
+    const nextValue = value || remoteUrlPlaceholder;
+    const isHttpUrl = /^https?:\/\//i.test(nextValue);
+    remoteUrlNode.textContent = nextValue;
+    if (isHttpUrl) {
+      remoteUrlNode.href = nextValue;
+      return;
+    }
+    remoteUrlNode.removeAttribute('href');
+  }
+
+  function renderOutput() {
+    const hasResponse =
+      outputState.url !== responsePlaceholder ||
+      outputState.passcode !== responsePlaceholder;
+    if (!hasResponse) {
+      outputNode.textContent = responsePlaceholder;
+      return;
+    }
+    outputNode.textContent = [
+      '[URL 接口响应]',
+      outputState.url,
+      '',
+      '[登录码接口响应]',
+      outputState.passcode
+    ].join('\n');
+  }
+
+  function setOutputSection(section, value) {
+    outputState[section] = value || responsePlaceholder;
+    renderOutput();
+  }
+
+  function collectSettings() {
+    return {
+      requestUrl: fields.requestUrl.value.trim(),
+      cookie: fields.cookie.value.trim(),
+      ipRequestBody: fields.ipRequestBody.value.trim(),
+      passcodeRequestBody: fields.passcodeRequestBody.value.trim(),
+      accept: fields.accept.value.trim(),
+      contentType: fields.contentType.value.trim(),
+      userAgent: fields.userAgent.value.trim(),
+      connection: fields.connection.value.trim(),
+      acceptEncoding: fields.acceptEncoding.value.trim(),
+      acceptLanguage: fields.acceptLanguage.value.trim(),
+      operateCommon: fields.operateCommon.value.trim(),
+      originFrom: fields.originFrom.value.trim(),
+      xiaomiProtocolFlagCli: fields.xiaomiProtocolFlagCli.value.trim()
+    };
+  }
+
+  function applySettings(settings) {
+    const nextSettings = normalizeSettings(settings);
+    fields.requestUrl.value = nextSettings.requestUrl;
+    fields.cookie.value = nextSettings.cookie;
+    fields.ipRequestBody.value = nextSettings.ipRequestBody;
+    fields.passcodeRequestBody.value = nextSettings.passcodeRequestBody;
+    fields.accept.value = nextSettings.accept;
+    fields.contentType.value = nextSettings.contentType;
+    fields.userAgent.value = nextSettings.userAgent;
+    fields.connection.value = nextSettings.connection;
+    fields.acceptEncoding.value = nextSettings.acceptEncoding;
+    fields.acceptLanguage.value = nextSettings.acceptLanguage;
+    fields.operateCommon.value = nextSettings.operateCommon;
+    fields.originFrom.value = nextSettings.originFrom;
+    fields.xiaomiProtocolFlagCli.value = nextSettings.xiaomiProtocolFlagCli;
+  }
+
+  function loadSettings() {
+    return decodeStoredSettings(readStorageValue(storageKeys.requestConfig));
+  }
+
+  function saveSettings(settings) {
+    writeStorageValue(storageKeys.requestConfig, encodeStoredSettings(settings));
+  }
+
+  function deleteSavedSettings() {
+    deleteStorageValue(storageKeys.requestConfig);
+  }
+
+  function saveCurrentSettings(showMessage) {
+    const settings = collectSettings();
+    saveSettings(settings);
+    if (showMessage) {
+      setStatus('已保存');
+    }
+    return settings;
+  }
+
+  function clearResultState(showToast = true) {
+    lastPasscode = '';
+    lastRemoteUrl = '';
+    setPasscodeResult(passcodePlaceholder, false);
+    setRemoteUrl(remoteUrlPlaceholder);
+    outputState.url = responsePlaceholder;
+    outputState.passcode = responsePlaceholder;
+    renderOutput();
+    setStatus('URL 和登录码已清空', showToast);
+  }
+
+  function clearSavedSettings() {
+    deleteSavedSettings();
+    applySettings(defaultSettings);
+    clearResultState(false);
+    setStatus('已删除保存的设置');
+  }
+
+  function escapeHtml(value) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderPasscodeSlots(passcode) {
+    return String(passcode)
+      .slice(0, 6)
+      .split('')
+      .map((char) => `<span class="passcode-slot">${escapeHtml(char)}</span>`)
+      .join('');
+  }
+
+  // ============== CURL PARSING ===============
+  function normalizeCurlCommand(command) {
+    return command.replace(/\\\r?\n/g, ' ').replace(/\r?\n/g, ' ').trim();
+  }
+
+  function tokenizeShellCommand(command) {
+    const tokens = [];
+    let current = '';
+    let inSingleQuote = false;
+    let inDoubleQuote = false;
+    let escaping = false;
+
+    for (let index = 0; index < command.length; index += 1) {
+      const char = command[index];
+      if (escaping) { current += char; escaping = false; continue; }
+      if (inSingleQuote) {
+        if (char === "'") inSingleQuote = false; else current += char;
+        continue;
+      }
+      if (inDoubleQuote) {
+        if (char === '"') { inDoubleQuote = false; continue; }
+        if (char === '\\') {
+          const nextChar = command[index + 1];
+          if (nextChar === '"' || nextChar === '\\' || nextChar === '$' || nextChar === '`') {
+            current += nextChar; index += 1; continue;
+          }
+        }
+        current += char; continue;
+      }
+      if (/\s/.test(char)) {
+        if (current) { tokens.push(current); current = ''; }
+        continue;
+      }
+      if (char === "'") { inSingleQuote = true; continue; }
+      if (char === '"') { inDoubleQuote = true; continue; }
+      if (char === '\\') { escaping = true; continue; }
+      current += char;
+    }
+    if (escaping) current += '\\';
+    if (current) tokens.push(current);
+    return tokens;
+  }
+
+  function parseHeaderLine(headerLine, requestHeaders) {
+    const separatorIndex = headerLine.indexOf(':');
+    if (separatorIndex === -1) return;
+    const headerName = headerLine.slice(0, separatorIndex).trim();
+    const headerValue = headerLine.slice(separatorIndex + 1).trim();
+    if (!headerName) return;
+    requestHeaders[headerName] = headerValue;
+  }
+
+  function readOptionValue(tokens, index, optionName) {
+    const value = tokens[index + 1];
+    if (typeof value === 'undefined') throw new Error(`${optionName} 缺少值。`);
+    return value;
+  }
+
+  function parseCurlCommand(command) {
+    const normalizedCommand = normalizeCurlCommand(command);
+    const tokens = tokenizeShellCommand(normalizedCommand);
+    if (!tokens.length) throw new Error('请先粘贴 CURL 命令');
+    const curlToken = tokens[0];
+    if (!/(^|\/)curl(\.exe)?$/i.test(curlToken)) throw new Error('当前内容不是可识别的 CURL 命令');
+    const request = { method: 'GET', url: '', headers: {}, data: undefined };
+    let hasBody = false;
+
+    for (let index = 1; index < tokens.length; index += 1) {
+      const token = tokens[index];
+      if (/^https?:\/\//i.test(token)) { request.url = token; continue; }
+      if (token === '-X' || token === '--request') { request.method = readOptionValue(tokens, index, token).toUpperCase(); index += 1; continue; }
+      if (token.startsWith('--request=')) { request.method = token.slice('--request='.length).toUpperCase(); continue; }
+      if (token === '-H' || token === '--header') { parseHeaderLine(readOptionValue(tokens, index, token), request.headers); index += 1; continue; }
+      if (token.startsWith('--header=')) { parseHeaderLine(token.slice('--header='.length), request.headers); continue; }
+      if (token === '-d' || token === '--data' || token === '--data-raw' || token === '--data-binary' || token === '--data-ascii') {
+        request.data = readOptionValue(tokens, index, token); hasBody = true; index += 1; continue;
+      }
+      if (token.startsWith('--data=') || token.startsWith('--data-raw=') || token.startsWith('--data-binary=') || token.startsWith('--data-ascii=')) {
+        request.data = token.slice(token.indexOf('=') + 1); hasBody = true; continue;
+      }
+      if (token === '--url') { request.url = readOptionValue(tokens, index, token); index += 1; continue; }
+      if (token.startsWith('--url=')) { request.url = token.slice('--url='.length); continue; }
+      if (token === '-A' || token === '--user-agent') { request.headers['User-Agent'] = readOptionValue(tokens, index, token); index += 1; continue; }
+      if (token.startsWith('--user-agent=')) { request.headers['User-Agent'] = token.slice('--user-agent='.length); continue; }
+      if (token === '-b' || token === '--cookie') { request.headers.Cookie = readOptionValue(tokens, index, token); index += 1; continue; }
+      if (token.startsWith('--cookie=')) { request.headers.Cookie = token.slice('--cookie='.length); continue; }
+    }
+    if (!request.url) throw new Error('未能从 CURL 命令中解析出请求地址');
+    if (hasBody && request.method === 'GET') request.method = 'POST';
+    return request;
+  }
+  // ============== END CURL PARSING ===============
+
+  function appendHeaderIfPresent(headers, name, value) {
+    if (value) { headers[name] = value; }
+  }
+
+  function buildCommonRequestConfig(settings, requestBody) {
+    const requestUrlObject = new URL(settings.requestUrl);
+    const host = requestUrlObject.host;
+    const headers = {
+      // 浏览器中的 fetch 不允许直接设置 Host
+      // 'Host': host,
+      'domain-refer': host,
+      'MIOT-REQUEST-MODEL': fixedHeaders.miotRequestModel
+    };
+
+    appendHeaderIfPresent(headers, 'Accept', settings.accept);
+    appendHeaderIfPresent(headers, 'Content-Type', settings.contentType);
+    // 某些浏览器允许手动设置 User-Agent，有的忽略
+    // appendHeaderIfPresent(headers, 'User-Agent', settings.userAgent);
+    appendHeaderIfPresent(headers, 'Accept-Language', settings.acceptLanguage);
+    
+    // 注意：fetch 会拦截 Cookie 头，只有部分环境/插件下生效
+    appendHeaderIfPresent(headers, 'Cookie', settings.cookie);
+    
+    appendHeaderIfPresent(headers, 'operate-common', settings.operateCommon);
+    appendHeaderIfPresent(headers, 'Origin-From', settings.originFrom);
+    appendHeaderIfPresent(headers, 'X-XIAOMI-PROTOCAL-FLAG-CLI', settings.xiaomiProtocolFlagCli);
+
+    return {
+      method: 'POST',
+      url: requestUrlObject.toString(),
+      headers,
+      data: requestBody
+    };
+  }
+
+  function requestWithFetch(requestConfig) {
+    return new Promise((resolve, reject) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        reject({ type: 'timeout' });
+      }, 30000);
+
+      fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestConfig),
+        signal: controller.signal
+      }).then(async (response) => {
+        clearTimeout(timeoutId);
+        const jsonRes = await response.json();
+        
+        if (jsonRes.error) {
+           throw new Error(jsonRes.error);
+        }
+
+        let headersStr = '';
+        if (jsonRes.headers) {
+          for (const [key, val] of Object.entries(jsonRes.headers)) {
+            headersStr += `${key}: ${val}\r\n`;
+          }
+        }
+        resolve({
+          responseText: jsonRes.data,
+          responseHeaders: headersStr
+        });
+      }).catch(error => {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+          reject({ type: 'timeout' });
+        } else {
+          console.error("Proxy Fetch Error:", error);
+          reject({
+            type: 'error',
+            detail: error.message || '网络请求失败，请检查后端代理服务是否正常运行'
+          });
+        }
+      });
+    });
+  }
+
+  function parseResponseAsJson(responseText, responseHeaders) {
+    const contentTypeLine = responseHeaders
+      .split(/\r?\n/)
+      .find((line) => line.toLowerCase().startsWith('content-type:'));
+    const trimmedText = responseText.trim();
+    const looksLikeJson = /^[\[{]/.test(trimmedText);
+    const isJsonType = Boolean(contentTypeLine && contentTypeLine.toLowerCase().includes('json'));
+
+    if (!trimmedText || (!looksLikeJson && !isJsonType)) {
+      return null;
+    }
+    try {
+      return JSON.parse(trimmedText);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function findPasscodeValue(value) {
+    if (value === null || typeof value === 'undefined') return '';
+    if (typeof value === 'string' || typeof value === 'number') return String(value);
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const nestedValue = findPasscodeValue(item);
+        if (nestedValue) return nestedValue;
+      }
+      return '';
+    }
+    if (typeof value === 'object') {
+      for (const key of passcodeKeys) {
+        if (Object.prototype.hasOwnProperty.call(value, key)) {
+          const directValue = findPasscodeValue(value[key]);
+          if (directValue) return directValue;
+        }
+      }
+      for (const child of Object.values(value)) {
+        const nestedValue = findPasscodeValue(child);
+        if (nestedValue) return nestedValue;
+      }
+    }
+    return '';
+  }
+
+  function findUrlValue(value) {
+    if (value === null || typeof value === 'undefined') return '';
+    if (typeof value === 'string') {
+      const trimmedValue = value.trim();
+      const urlMatch = trimmedValue.match(/https?:\/\/[^\s"'<>]+/i);
+      return urlMatch ? urlMatch[0] : '';
+    }
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const nestedValue = findUrlValue(item);
+        if (nestedValue) return nestedValue;
+      }
+      return '';
+    }
+    if (typeof value === 'object') {
+      const directKeys = ['url', 'ipUrl', 'ip_url', 'link', 'autowebconfig_url', 'webConfigUrl'];
+      for (const key of directKeys) {
+        if (Object.prototype.hasOwnProperty.call(value, key)) {
+          const directValue = findUrlValue(value[key]);
+          if (directValue) return directValue;
+        }
+      }
+      for (const child of Object.values(value)) {
+        const nestedValue = findUrlValue(child);
+        if (nestedValue) return nestedValue;
+      }
+    }
+    return '';
+  }
+
+  function formatResponseText(responseText, parsedJson) {
+    if (!parsedJson) return responseText || responsePlaceholder;
+    return JSON.stringify(parsedJson, null, 2);
+  }
+
+  function getRequestPreset(kind) {
+    if (kind === 'url') {
+      return {
+        bodyKey: 'ipRequestBody', outputKey: 'url', loadingText: 'URL 获取中...', missingText: '请先填写 URL 接口 POST 数据', triggerLabel: 'URL', successText: 'URL 已刷新', emptyText: 'URL 未获取到，请检查 URL 接口 POST 数据'
+      };
+    }
+    return {
+      bodyKey: 'passcodeRequestBody', outputKey: 'passcode', loadingText: '登录码获取中...', missingText: '请先填写登录码 POST 数据', triggerLabel: '登录码', successText: '登录码已刷新', emptyText: '登录码未获取到，请检查登录码 POST 数据'
+    };
+  }
+
+  function resetRequestDisplay(kind) {
+    if (kind === 'url') {
+      lastRemoteUrl = ''; setRemoteUrl(remoteUrlPlaceholder); setOutputSection('url', responsePlaceholder); return;
+    }
+    lastPasscode = ''; setPasscodeResult(passcodePlaceholder, false); setOutputSection('passcode', responsePlaceholder);
+  }
+
+  async function executeSavedPost(kind, triggerSource) {
+    const settings = saveCurrentSettings(false);
+    const requestPreset = getRequestPreset(kind);
+    const requestBody = settings[requestPreset.bodyKey];
+
+    if (!settings.requestUrl) {
+      resetRequestDisplay(kind); setStatus('没有 URL，请先填写'); return;
+    }
+    if (!requestBody) {
+      resetRequestDisplay(kind); setStatus(requestPreset.missingText); return;
+    }
+
+    let commonRequestConfig;
+    try {
+      commonRequestConfig = buildCommonRequestConfig(settings, '');
+    } catch (error) {
+      resetRequestDisplay(kind); setStatus('URL 格式不正确'); return;
+    }
+
+    if (kind === 'url') {
+      lastRemoteUrl = ''; setRemoteUrl(requestPreset.loadingText);
+    } else {
+      lastPasscode = ''; setPasscodeResult(requestPreset.loadingText, false);
+    }
+
+    setOutputSection(requestPreset.outputKey, '请求中...');
+    setStatus(`${triggerSource}，正在请求${requestPreset.triggerLabel}...`);
+
+    try {
+      const response = await requestWithFetch({
+        ...commonRequestConfig,
+        data: requestBody
+      });
+      const parsedJson = parseResponseAsJson(response.responseText, response.responseHeaders || '');
+      const formattedText = formatResponseText(response.responseText, parsedJson);
+
+      setOutputSection(requestPreset.outputKey, formattedText);
+
+      if (kind === 'url') {
+        const remoteUrl = findUrlValue(parsedJson?.result ?? parsedJson ?? response.responseText);
+        if (remoteUrl) {
+          lastRemoteUrl = remoteUrl; setRemoteUrl(remoteUrl); setStatus(requestPreset.successText); return;
+        }
+        lastRemoteUrl = ''; setRemoteUrl(remoteUrlPlaceholder); setStatus(requestPreset.emptyText); return;
+      }
+
+      const passcode = parsedJson ? findPasscodeValue(parsedJson.result?.passcode ?? parsedJson.passcode ?? parsedJson) : '';
+      if (passcode) {
+        lastPasscode = passcode; setPasscodeResult(passcode, true); setStatus(requestPreset.successText); return;
+      }
+
+      lastPasscode = ''; setPasscodeResult('未提取到 passcode', false); setStatus(requestPreset.emptyText);
+    } catch (error) {
+      if (kind === 'url') {
+        lastRemoteUrl = ''; setRemoteUrl(remoteUrlPlaceholder);
+      } else {
+        lastPasscode = ''; setPasscodeResult(error?.type === 'timeout' ? '请求超时' : '请求失败', false);
+      }
+      setOutputSection(requestPreset.outputKey, typeof error.detail === 'string' ? error.detail : JSON.stringify(error.detail || error));
+      setStatus(`${requestPreset.triggerLabel}请求失败`);
+    }
+  }
+
+  function copyPasscodeToClipboard(showStatus) {
+    if (!lastPasscode) {
+      if (showStatus) setStatus('当前没有可复制的登录码');
+      return Promise.resolve(false);
+    }
+
+    if (navigator.clipboard?.writeText) {
+      return navigator.clipboard.writeText(lastPasscode)
+        .then(() => {
+          if (showStatus) setStatus('登录码已复制到剪贴板');
+          return true;
+        })
+        .catch(() => {
+          // 备选方案
+          const textArea = document.createElement("textarea");
+          textArea.value = lastPasscode;
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          try {
+            document.execCommand('copy');
+            if (showStatus) setStatus('登录码已复制到剪贴板');
+            document.body.removeChild(textArea);
+            return true;
+          } catch (err) {
+            if (showStatus) setStatus('复制失败，请手动复制');
+            document.body.removeChild(textArea);
+            return false;
+          }
+        });
+    }
+
+    if (showStatus) setStatus('当前环境不支持自动复制');
+    return Promise.resolve(false);
+  }
+
+  function copyPasscode() {
+    copyPasscodeToClipboard(true);
+  }
+
+  function openSettingsModal() {
+    settingsModalNode.classList.add('is-open');
+  }
+
+  function closeSettingsModal() {
+    settingsModalNode.classList.remove('is-open');
+  }
+
+  settingsModalNode.addEventListener('click', (event) => {
+    if (event.target === settingsModalNode) {
+      closeSettingsModal();
+    }
+  });
+
+  panel.addEventListener('click', (event) => {
+    const actionNode = event.target instanceof Element ? event.target.closest('[data-action]') : null;
+    const action = actionNode?.getAttribute('data-action');
+
+    if (action === 'open-settings') { openSettingsModal(); return; }
+    if (action === 'save') { saveCurrentSettings(true); closeSettingsModal(); return; }
+    if (action === 'clear-saved') { clearSavedSettings(); return; }
+    if (action === 'clear') { clearResultState(); return; }
+    if (action === 'close-settings') { closeSettingsModal(); return; }
+    if (action === 'fetch-url') { executeSavedPost('url', '手动获取 URL'); return; }
+    if (action === 'fetch-passcode') { executeSavedPost('passcode', '手动获取登录码'); return; }
+    if (action === 'copy') { copyPasscode(); return; }
+    if (action === 'upload-har') { fileInput.click(); return; }
+  });
+
+  // ========== HAR & File parsing logic ==========
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.har,.json,.txt';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) handleHarUpload(file);
+    fileInput.value = '';
+  });
+  
+  const dropOverlay = document.createElement('div');
+  dropOverlay.innerHTML = '<div style="font-size:24px; font-weight:bold;">松开鼠标，导入抓包文件</div>';
+  Object.assign(dropOverlay.style, {
+    position: 'fixed', inset: 0, zIndex: 2147483647, background: 'rgba(47, 124, 255, 0.85)', color: '#fff', 
+    display: 'none', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)'
+  });
+  document.body.appendChild(dropOverlay);
+
+  let dragCounter = 0;
+  window.addEventListener('dragenter', (e) => {
+    e.preventDefault();
+    dragCounter++;
+    dropOverlay.style.display = 'flex';
+  });
+  window.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    dragCounter--;
+    if (dragCounter === 0) dropOverlay.style.display = 'none';
+  });
+  window.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+  window.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dragCounter = 0;
+    dropOverlay.style.display = 'none';
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleHarUpload(file);
+  });
+
+  function handleHarUpload(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target.result;
+        let parsed = null;
+        try {
+          parsed = JSON.parse(text);
+        } catch(err) {
+          // 纯文本抓包扫描（例如有些抓包工具导出纯文本包含 curl）
+          const newSettings = migrateCurlCommandToSettings(text);
+          if (newSettings && newSettings.requestUrl) {
+            applySettings(newSettings);
+            saveCurrentSettings(false);
+            setStatus('成功通过文本识别填充了部分请求参数');
+          } else {
+            setStatus('文件不是有效的 JSON/HAR 格式，且未识别出请求文本');
+          }
+          return;
+        }
+        
+        if (parsed?.log?.entries) {
+          parseHarEntries(parsed.log.entries);
+        } else {
+          setStatus('解析 JSON 成功，但没有找到标准 HAR 的 log.entries 结构');
+        }
+      } catch (err) {
+        setStatus('解析文件失败: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function parseHarEntries(entries) {
+    let foundAny = false;
+    let foundUrl = false;
+    let foundPasscode = false;
+    let newSettings = collectSettings();
+
+    for (const entry of entries) {
+      if (!entry.request) continue;
+      const req = entry.request;
+      // 过滤只处理小米相关域名
+      if (!req.url || (!req.url.includes('mijia.tech') && !req.url.includes('api.io.mi.com'))) continue;
+      
+      foundAny = true;
+      const findHeader = (name) => req.headers?.find(h => h.name.toLowerCase() === name.toLowerCase())?.value || '';
+      
+      // 只要是小米的请求，就尽力提取最新的 Cookie 和 Headers
+      newSettings.cookie = findHeader('Cookie') || newSettings.cookie;
+      newSettings.accept = findHeader('Accept') || newSettings.accept;
+      newSettings.contentType = findHeader('Content-Type') || newSettings.contentType;
+      newSettings.userAgent = findHeader('User-Agent') || newSettings.userAgent;
+      newSettings.operateCommon = findHeader('operate-common') || newSettings.operateCommon;
+      newSettings.originFrom = findHeader('Origin-From') || newSettings.originFrom;
+      newSettings.xiaomiProtocolFlagCli = findHeader('X-XIAOMI-PROTOCAL-FLAG-CLI') || newSettings.xiaomiProtocolFlagCli;
+
+      if (req.method !== 'POST') continue;
+      
+      const postText = req.postData?.text || '';
+      if (!postText) continue;
+
+      const kind = detectLegacyRequestKind(postText);
+      const isRpc = req.url.includes('/app/home/rpc');
+
+      // 如果有明确特征或者是 rpc 请求，就提取 URL 和 POST Body
+      if (kind === 'url') {
+        foundUrl = true;
+        newSettings.requestUrl = req.url;
+        newSettings.ipRequestBody = postText;
+      } else if (kind === 'passcode' || isRpc) {
+        // 如果是加密的 rpc 请求，默认认为是 passcode 请求（因为通常抓的最后一个 rpc 就是 passcode）
+        foundPasscode = true;
+        newSettings.requestUrl = req.url;
+        newSettings.passcodeRequestBody = postText;
+      } else {
+        // 如果都不是，但还没有任何数据，就暂时当做 passcode 兜底填入，但不标记找到了（防止误导）
+        if (!newSettings.requestUrl) newSettings.requestUrl = req.url;
+        if (!newSettings.passcodeRequestBody) newSettings.passcodeRequestBody = postText;
+      }
+    }
+
+    if (foundUrl || foundPasscode) {
+      applySettings(newSettings);
+      saveCurrentSettings(false);
+      setStatus(`成功解析抓包文件：识别到 ${[foundUrl ? 'URL' : '', foundPasscode ? '登录码' : ''].filter(Boolean).join(' 和 ')} 请求参数`);
+    } else if (foundAny) {
+      applySettings(newSettings);
+      saveCurrentSettings(false);
+      setStatus('提取了 Cookie 等认证信息，但未找到匹配的 RPC 请求，请确保抓取了正确的登录码接口。');
+    } else {
+      setStatus('抓包文件中未找到任何小米 (mijia.tech) 相关的请求数据。');
+    }
+  }
+
+  applySettings(loadSettings());
+  setRemoteUrl(remoteUrlPlaceholder);
+  clearResultState(false);
+  
+})();
+</script>
+
+</body>
+</html>
